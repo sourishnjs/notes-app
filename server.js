@@ -5,9 +5,9 @@ const sanitizeHTML = require('sanitize-html')
 const app = express()
 let db
 
-const port = process.env.PORT
-if(port=='null' || port==''){
-  port = port
+let port = process.env.PORT
+if(port == null || port == ''){
+  port = 3000
 }
 
 app.use(express.static('public')) //contents of this folder are available from root of our folder
@@ -15,7 +15,7 @@ app.use(express.static('public')) //contents of this folder are available from r
 const connectionString = 'mongodb+srv://dbSourish:iPhone6s@cluster0-d5btr.mongodb.net/TodoApp?retryWrites=true&w=majority'
 mongodb.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology: true}, (err,client)=>{
     db = client.db()
-    app.listen(3000, ()=>{
+    app.listen(port, ()=>{
         console.log('server is up')
     })
 })
@@ -26,7 +26,7 @@ app.use(express.urlencoded({extended: false})) // configures the express framewo
 
 //function within the toArray is called whenever this DB action is complete, as we dont know its gonna take 2 milisces or 20000 milisecs
 
-const passwordProtected = (req,res,next) =>{
+const passwordProtected = (req, res, next) =>{
   res.set('www-Authenticate', 'Basic realm="Simple To Do app"')
   //console.log(req.headers.authorization)
   if(req.headers.authorization == 'Basic YWRtaW46YWRtaW4=') {
